@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
+
+# Get absolute parent path
 path = str(Path(__file__).parent.absolute())
 
 # Extracting Kaggle Database source:https://www.kaggle.com/datasets/nikhil25803/github-dataset/data
@@ -60,6 +62,8 @@ githubDataFrame.language = githubDataFrame.language.fillna('No language specifie
 githubDataFrame = githubDataFrame.drop_duplicates()
 repositoryDataFrame.primary_language.isnull().value_counts()
 repositoryDataFrame.primary_language = repositoryDataFrame.primary_language.fillna('No language specified')
+repositoryDataFrame.languages_used.isnull().value_counts()
+repositoryDataFrame.languages_used = repositoryDataFrame.languages_used.fillna('No language specified')
 repositoryDataFrame = repositoryDataFrame.drop_duplicates()
 st.divider()
 
@@ -135,9 +139,45 @@ st.markdown('''
 ''')
 st.bar_chart(contributions, x="Repository Name", y="Contributors")
 
+# Programming Language Usage Trend over the years on GitHub
+st.subheader("Programming Language usage trend over the years on GitHub")
+repositoryDataFrame['Year'] = repositoryDataFrame['Created At'].str.split('-').str[0]
+lineChartDataFrame = repositoryDataFrame.groupby(['Year', 'Primary Language'], as_index=False)['Star Count'].count()
+lineChartDataFrame = lineChartDataFrame.sort_values(['Year', 'Star Count'], ascending=[True, False]).groupby('Year').head(5)
+lineChartDataFrame = pd.pivot_table(lineChartDataFrame, values='Star Count', index='Year', columns='Primary Language')
+lineChartDataFrame = lineChartDataFrame.fillna(0)
+lineChartDataFrame = lineChartDataFrame.reset_index()
+# Omitting 2023 since does not have full year's data
+lineChartDataFrame = lineChartDataFrame[lineChartDataFrame['Year'] != '2023']
+st.markdown('''
+    - :violet[**Python's Rise:**] :orange[Python's popularity] has seen a significant rise over the years, peaking around 2020. 
+    This could be attributed to the surge in data science, machine learning, and AI projects, where Python is a 
+    dominant language.
+    - :violet[**JavaScript's Consistency:**] :orange[JavaScript] has remained consistently popular, reflecting its 
+    central role in web development. It reached its peak between 2017 and 2019 but slightly declined after that.
+    - :violet[**Jupyter Notebook's Introduction:**] The :orange[Jupyter Notebook] data indicates its emergence and 
+    growth around 2014, aligning with the rise in data science and interactive computing trends.
+    - :violet[**Decline of Traditional Languages:**] Languages like :orange[C], :orange[C++], and :orange[Java] show a 
+    decline in recent years, suggesting a shift in the programming landscape. While they remain fundamental, newer 
+    languages and technologies might be overshadowing them.
+    - :violet[**Ambiguity with "No language specified”:**] The line representing "No language specified" suggests that 
+    a significant number of repositories did not specify a language, especially around 2018-2020. 
+    This could be due to various reasons such as documentation repositories, or repositories with non-code assets.
+
+''')
+st.line_chart(lineChartDataFrame, x="Year")
+st.markdown('''
+    The above graph has been contructed to show interesting insights of programming language usages over the years. For 
+    the data to be constructed, the :blue["Created At] column in :blue["Repository Data"] has been split and the 
+    creation :blue["Year"] of each repository is extracted. The rows are grouped by [Year, Primary Language] and sorted 
+    based on [Year, Star Count].
+''')
+st.caption(':green[Here is the data for deeper visualization:]') ##
+st.dataframe(lineChartDataFrame)
+
 # Stars VS Forks Count
 fig, ax = plt.subplots()
-st.subheader('Number of Stars VS Forks Count')
+st.subheader('Stars VS Forks Count')
 st.markdown('''
     Q: What its the difference between Starring a repository VS Forking a repository?
     Ans: :orange["Starring"] a repository is a way of bookmarking it for future reference, while :orange["Forking"] a 
@@ -160,8 +200,8 @@ st.scatter_chart(githubDataFrame, x="Star Count", y="Fork Count")
 
 # Top 10 popular languages
 st.subheader('Top 10 popular languages on GitHub')
-languagesUsed = githubDataFrame.loc[githubDataFrame.Language != 'No language specified']
-languagesUsed = languagesUsed.Language.value_counts()[:10]
+languagesUsed = githubDataFrame.loc[githubDataFrame['Language'] != 'No language specified']
+languagesUsed = languagesUsed['Language'].value_counts()[:10]
 st.markdown('''
     - :violet[**Most Popular:**] :orange["JavaScript"] stands out as the most popular language on GitHub with a count of
     237, followed by Python at 151.
@@ -174,22 +214,40 @@ st.markdown('''
     - :violet[**Data Science & Machine Learning:**] The presence of :orange["Python"] and :orange["Jupyter Notebook"] in
     the top languages highlights the growth and popularity of data science and machine learning projects on GitHub.
 ''')
-st.bar_chart(languagesUsed)
 st.caption(':green[For this graph repositories with no language specified have not been considered]')
+st.bar_chart(languagesUsed)
+
+st.markdown('The below graph is a broader representation of repositories across GitHub. When it comes to repositories '
+            'without open issue requests, :orange["JavaScript"] and :orange["Python"] are equally popular languages '
+            'for most repositories.')
+st.bar_chart(repositoryDataFrame["Primary Language"].value_counts()[:10], color="#FFC300")
 
 githubDataFrame = githubDataFrame.loc[githubDataFrame.Language != 'No language specified']
 repositoryDataFrame = repositoryDataFrame.loc[repositoryDataFrame['Primary Language'] != 'No language specified']
-# Repositories with the Highest Star Counts
-st.subheader('Repositories with the Highest Star Counts')
 
-languagesUsed = repositoryDataFrame.sort_values(by='Star Count', ascending=False)
-languagesUsed = languagesUsed['Primary Language'].value_counts()[:10]
-st.bar_chart(languagesUsed)
+# Languages with the Highest Star Count Repositories
+st.subheader('Languages with the Highest Star Count Repositories')
+sortedByStartCount = repositoryDataFrame.sort_values(by='Star Count', ascending=False)
+languagesUsed = sortedByStartCount['Primary Language'].value_counts()[:10]
+st.markdown('''
+    - :violet[**Top Contenders:**] :orange["JavaScript"] and :orange["Python"] repositories have the highest star counts, approaching 
+    450,000 stars. This suggests that they are among the most popular languages for the well-acknowledged repositories 
+    on GitHub.
+    - :violet[**Lower Popularity:**] Languages such as :orange["C"], :orange["C#"], :orange["C++"], :orange["Go"], and 
+    :orange["Typescript"] have star counts below 150,000. While these repositories are still popular given their 
+    inclusion in the top 10, they have relatively fewer stars compared to the leading languages.
+    - :violet[**Web Development Recognition:**] The high star counts for :orange["JavaScript"], :orange["HTML"], and 
+    :orange["PHP"] highlight the importance and recognition of web development repositories on GitHub.
+    - :violet[**Emerging Languages:**] The presence of :orange["Go"] and :orange["Typescript"] in the list indicates the rising 
+    popularity and adoption of these newer languages in the developer community.
+''')
+st.bar_chart(languagesUsed, color="#C70039")
 
-# Repositories with the Highest Fork Counts
-st.subheader('Repositories with the Highest Fork Counts')
-languagesUsed = repositoryDataFrame.sort_values(by='Fork Count', ascending=False)
-languagesUsed = languagesUsed['Primary Language'].value_counts()[:10]
+# Languages with the Highest Fork Count Repositories
+st.subheader('Languages with the Highest Fork Count Repositories')
+sortedByForkCount = repositoryDataFrame.sort_values(by='Fork Count', ascending=False)
+st.write(sortedByForkCount[:20])
+languagesUsed = sortedByForkCount['Primary Language'].value_counts()[:10]
 st.bar_chart(languagesUsed)
 
 # Repositories with the Highest Issue Counts
@@ -204,24 +262,18 @@ languagesUsed = repositoryDataFrame.sort_values(by='Pull Requests', ascending=Fa
 languagesUsed = languagesUsed['Primary Language'].value_counts()[:10]
 st.bar_chart(languagesUsed)
 
+# Repositories with the Highest Commit Requests
+st.subheader('Repositories with the Highest Commits ')
+languagesUsed = repositoryDataFrame.sort_values(by='Pull Requests', ascending=False)
+languagesUsed = languagesUsed['Primary Language'].value_counts()[:10]
+st.bar_chart(languagesUsed)
+
 # Forck, Issues, Commit, pull, watchers, license(top licesne, license vs valueCount)
 
 
-# Line
 
 
-st.subheader("lineChartDataFrame")
-repositoryDataFrame['Year'] = repositoryDataFrame['Created At'].str.split('-').str[0]
-lineChartDataFrame = repositoryDataFrame.groupby(['Year', 'Primary Language'], as_index=False)['Star Count'].count()
-lineChartDataFrame = lineChartDataFrame.sort_values(['Year', 'Star Count'], ascending=[True, False]).groupby('Year').head(5)
-lineChartDataFrame = pd.pivot_table(lineChartDataFrame, values='Star Count', index='Year', columns='Primary Language')
-lineChartDataFrame = lineChartDataFrame.fillna(0)
-lineChartDataFrame = lineChartDataFrame.reset_index()
-st.dataframe(lineChartDataFrame)
-lineChartDataFrame = lineChartDataFrame[lineChartDataFrame['Year'] != '2023']
-st.line_chart(lineChartDataFrame, x="Year")
 
-st.bar_chart(repositoryDataFrame["Primary Language"].value_counts())
 # created, extrcat year, y axis group by count of primary language,
 
 # Remove non for lang col in 2nd table , stars vs forks data set usage

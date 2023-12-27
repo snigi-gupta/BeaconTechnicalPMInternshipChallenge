@@ -251,17 +251,6 @@ st.markdown('''
 licenseUsed = repositoryDataFrame['License'].value_counts()[:10]
 st.bar_chart(licenseUsed)
 
-st.divider()
-
-st.markdown('''
-    Note: There are 6 additional graphs with their analyis. However, the streamlit server could not handle the page load
-    and hence the same have been commented in the code. The screenshots of all the graphs including the additional 6 
-    graphs are present in this GoogleDrive folder with view permissions.
-    
-    Drive link: https://drive.google.com/drive/folders/1DS7bnk_lEX8DAj58KSWyc7Vk44FZBdpY?usp=sharing
-    GitHub: https://github.com/snigi-gupta/BeaconTechnicalPMInternshipChallenge/tree/main
-''')
-
 # # Repositories with the Highest Star Counts
 # starCount = repositoryDataFrame.sort_values(by='Star Count', ascending=False)[:10]
 # st.subheader('Repositories with Highest Star Counts')

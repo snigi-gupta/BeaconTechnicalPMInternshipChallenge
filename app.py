@@ -155,7 +155,7 @@ st.markdown('''
     increase, but not linearly. There's a broader spread in fork counts as star counts increase, indicating popular
     repositories have less modifications and thus lesser forking.
 ''')
-st.scatter_chart(githubDataFrame, x="Star Count", y="Fork Count")
+st.scatter_chart(repositoryDataFrame, x="Star Count", y="Fork Count")
 
 
 # Top 10 popular languages

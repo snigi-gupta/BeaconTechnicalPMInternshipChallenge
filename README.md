@@ -14,4 +14,5 @@
 
 ![image](https://github.com/snigi-gupta/BeaconTechnicalPMInternshipChallenge/assets/56351901/b7d74ba2-f3b0-4d66-9f88-085087b5166f)
 
-![image](https://github.com/snigi-gupta/BeaconTechnicalPMInternshipChallenge/assets/56351901/c4ca433f-dad9-4699-b53f-d51f31fc0eb7)
+![image](https://github.com/snigi-gupta/BeaconTechnicalPMInternshipChallenge/assets/56351901/9bcad814-19b1-48eb-8fbf-6a91c02aca0b)
+

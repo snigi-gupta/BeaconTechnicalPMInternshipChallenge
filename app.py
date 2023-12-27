@@ -340,53 +340,6 @@ st.markdown('''
 ''')
 st.bar_chart(issueCount, x="Repository Name", y="Issue Count", color="#ee003f")
 
-# Highest Star Count Repositories based on Language used
-st.subheader('Highest Star Count Repositories based on Language used')
-sortedByStarCount = repositoryDataFrame.sort_values(by='Star Count', ascending=False)
-languagesUsed = sortedByStarCount[['Primary Language', 'Star Count']][:10]
-st.markdown('''
-    - :violet[**Top Contenders:**] :orange["JavaScript"] and :orange["Python"] repositories have the highest star counts
-    , approaching 450,000 stars. This suggests that they are among the most popular languages for the well-acknowledged 
-    repositories on GitHub.
-    - :violet[**Lower Popularity:**] Languages such as :orange["C"], :orange["C#"], :orange["C++"], :orange["Go"], and 
-    :orange["Typescript"] have star counts below 150,000. While these repositories are still popular given their 
-    inclusion in the top 10, they have relatively fewer stars compared to the leading languages.
-    - :violet[**Web Development Recognition:**] The high star counts for :orange["JavaScript"], :orange["HTML"], and 
-    :orange["PHP"] highlight the importance and recognition of web development repositories on GitHub.
-    - :violet[**Emerging Languages:**] The presence of :orange["Go"] and :orange["Typescript"] in the list indicates the 
-    rising popularity and adoption of these newer languages in the developer community.
-''')
-st.line_chart(languagesUsed, x='Star Count', y='Primary Language')
-
-# # Repositories with the Highest Commit Requests
-# st.subheader('Top 10 Repositories with the Highest Commits ')
-# sortedByCommitCount = repositoryDataFrame.sort_values(by='Commit Count', ascending=False)
-# st.write(sortedByCommitCount[:10])
-# # st.bar_chart(sortedByCommitCount, x="Name", y="Commit Count")
-
-# Languages with the Highest Fork Count Repositories
-st.subheader('Languages with the Highest Fork Count Repositories')
-sortedByForkCount = repositoryDataFrame.sort_values(by='Fork Count', ascending=False)
-st.write(sortedByForkCount[:20])
-languagesUsed = sortedByForkCount['Primary Language'].value_counts()[:10]
-st.write(languagesUsed)
-st.bar_chart(languagesUsed)
-
-# Repositories with the Highest Issue Counts
-st.subheader('Repositories with the Highest Issue Counts')
-languagesUsed = githubDataFrame.sort_values(by='Issue Count', ascending=False)
-languagesUsed = languagesUsed['Language'].value_counts()[:10]
-st.bar_chart(languagesUsed)
-
-# Repositories with the Highest Pull Requests
-st.subheader('Repositories with the Highest Pull Requests')
-languagesUsed = repositoryDataFrame.sort_values(by='Pull Requests', ascending=False)
-languagesUsed = languagesUsed['Primary Language'].value_counts()[:10]
-st.bar_chart(languagesUsed)
-
-# Forck, Issues, Commit, pull, watchers, license(top licesne, license vs valueCount)
-
-
 st.divider()
 st.markdown('''
     Thank you for the opportunity to work on this fun problem statement!

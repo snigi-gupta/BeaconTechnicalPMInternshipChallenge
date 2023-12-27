@@ -325,20 +325,20 @@ st.markdown('''
 ''')
 st.bar_chart(commitCount, x="Name", y="Commit Count", color="#f67410")
 
-# Repositories with the Highest Issue Counts
-issueCount = githubDataFrame.sort_values(by='Issue Count', ascending=False)[:10]
-st.subheader('Repositories with Highest Issue Counts')
-st.markdown('''
-    - :violet[**Aleth's Prominence:**] The orange["aleth"] repository has the highest issue count, considerably
-    surpassing the other repositories. This suggests that "aleth", a C++ Ethereum client, is a complex project that
-    might have many reported issues, feature requests, and discussions.
-    - :violet[**Local Development and Testing:**] orange["localstack"], which provides a local AWS cloud stack for
-    testing, has a considerable issue count, indicating its widespread use and the challenges or enhancements requested
-    by users.
-    - :violet[**Consistency:**] Most repositories, except for orange["aleth"], have issue counts ranging from 100
-    to 300, indicating that they have a relatively similar level of activity and engagement.
-''')
-st.bar_chart(issueCount, x="Repository Name", y="Issue Count", color="#ee003f")
+# # Repositories with the Highest Issue Counts
+# issueCount = githubDataFrame.sort_values(by='Issue Count', ascending=False)[:10]
+# st.subheader('Repositories with Highest Issue Counts')
+# st.markdown('''
+#     - :violet[**Aleth's Prominence:**] The orange["aleth"] repository has the highest issue count, considerably
+#     surpassing the other repositories. This suggests that "aleth", a C++ Ethereum client, is a complex project that
+#     might have many reported issues, feature requests, and discussions.
+#     - :violet[**Local Development and Testing:**] orange["localstack"], which provides a local AWS cloud stack for
+#     testing, has a considerable issue count, indicating its widespread use and the challenges or enhancements requested
+#     by users.
+#     - :violet[**Consistency:**] Most repositories, except for orange["aleth"], have issue counts ranging from 100
+#     to 300, indicating that they have a relatively similar level of activity and engagement.
+# ''')
+# st.bar_chart(issueCount, x="Repository Name", y="Issue Count", color="#ee003f")
 
 st.divider()
 st.markdown('''

@@ -310,20 +310,20 @@ st.markdown('''
 ''')
 st.bar_chart(pullRequests, x="Name", y="Pull Requests", color="#5e16f0")
 
-# Repositories with the Highest Commit Counts
-commitCount = repositoryDataFrame.sort_values(by='Commit Count', ascending=False)[:10]
-st.subheader('Repositories with Highest Commit Counts')
-st.markdown('''
-    - :violet[**Linux Dominance:**] The repositories :orange["kernel"], :orange["linux-next"], :orange["linux-mksw"],
-    and :orange["mpc-linux-next"] have high commit counts, suggesting that the Linux operating system sees extensive
-    development and contributions. The presence of multiple Linux-related repositories underscores the active and
-    open-source nature of Linux development.
-    - :violet[**Commit Management:**] The repository :orange["Committed"] has a significant commit count.
-    It might be related to commit management, version control, or developer tools given its name and high commit count.
-    - :violet[**Consistent Activity:**] Most of the repositories displayed have commit counts ranging between 1,000,000
-    to 3,000,000, indicating consistent and active development or contributions to these repositories.
-''')
-st.bar_chart(commitCount, x="Name", y="Commit Count", color="#f67410")
+# # Repositories with the Highest Commit Counts
+# commitCount = repositoryDataFrame.sort_values(by='Commit Count', ascending=False)[:10]
+# st.subheader('Repositories with Highest Commit Counts')
+# st.markdown('''
+#     - :violet[**Linux Dominance:**] The repositories :orange["kernel"], :orange["linux-next"], :orange["linux-mksw"],
+#     and :orange["mpc-linux-next"] have high commit counts, suggesting that the Linux operating system sees extensive
+#     development and contributions. The presence of multiple Linux-related repositories underscores the active and
+#     open-source nature of Linux development.
+#     - :violet[**Commit Management:**] The repository :orange["Committed"] has a significant commit count.
+#     It might be related to commit management, version control, or developer tools given its name and high commit count.
+#     - :violet[**Consistent Activity:**] Most of the repositories displayed have commit counts ranging between 1,000,000
+#     to 3,000,000, indicating consistent and active development or contributions to these repositories.
+# ''')
+# st.bar_chart(commitCount, x="Name", y="Commit Count", color="#f67410")
 
 # # Repositories with the Highest Issue Counts
 # issueCount = githubDataFrame.sort_values(by='Issue Count', ascending=False)[:10]

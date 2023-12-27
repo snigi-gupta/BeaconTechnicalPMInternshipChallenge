@@ -3,8 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Extracting Kaggle Database source:https://www.kaggle.com/datasets/nikhil25803/github-dataset/data
-githubDataFrame = pd.read_csv("/Users/snigdhagupta/Downloads/archive/github_dataset.csv")
-repositoryDataFrame = pd.read_csv("/Users/snigdhagupta/Downloads/archive/repository_data.csv")
+githubDataFrame = pd.read_csv("./github_dataset.csv")
+repositoryDataFrame = pd.read_csv("./repository_data.csv")
 
 # View Raw Data
 st.title('Beacon Technical Product Manager - Internship Challenge')

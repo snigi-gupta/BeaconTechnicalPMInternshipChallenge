@@ -1,10 +1,12 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+from pathlib import Path
+path = str(Path(__file__).parent.absolute())
 
 # Extracting Kaggle Database source:https://www.kaggle.com/datasets/nikhil25803/github-dataset/data
-githubDataFrame = pd.read_csv("./github_dataset.csv")
-repositoryDataFrame = pd.read_csv("./repository_data.csv")
+githubDataFrame = pd.read_csv(path + "/github_dataset.csv")
+repositoryDataFrame = pd.read_csv(path + "/repository_data.csv")
 
 # View Raw Data
 st.title('Beacon Technical Product Manager - Internship Challenge')

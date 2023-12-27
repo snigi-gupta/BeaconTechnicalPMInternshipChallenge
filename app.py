@@ -117,6 +117,7 @@ st.write("Rows x Columns: ", repositoryDataFrame.shape)
 st.dataframe(repositoryDataFrame[:25])
 st.divider()
 
+
 # Data Analysis
 st.header('Data Analysis')
 st.markdown('''
@@ -142,8 +143,7 @@ st.bar_chart(contributions, x="Repository Name", y="Contributors")
 st.subheader("Programming Language usage trend over the years on GitHub")
 repositoryDataFrame['Year'] = repositoryDataFrame['Created At'].str.split('-').str[0]
 lineChartDataFrame = repositoryDataFrame.groupby(['Year', 'Primary Language'], as_index=False)['Star Count'].count()
-lineChartDataFrame = lineChartDataFrame.sort_values(['Year', 'Star Count'], ascending=[True, False]).groupby(
-    'Year').head(5)
+lineChartDataFrame = lineChartDataFrame.sort_values(['Year', 'Star Count'], ascending=[True, False]).groupby('Year').head(5)
 lineChartDataFrame = pd.pivot_table(lineChartDataFrame, values='Star Count', index='Year', columns='Primary Language')
 lineChartDataFrame = lineChartDataFrame.fillna(0)
 lineChartDataFrame = lineChartDataFrame.reset_index()
@@ -200,6 +200,7 @@ st.markdown('''
 ''')
 st.scatter_chart(githubDataFrame, x="Star Count", y="Fork Count")
 
+
 # Top 10 popular languages
 st.subheader('Top 10 popular languages on GitHub')
 languagesUsed = githubDataFrame.loc[githubDataFrame['Language'] != 'No language specified']
@@ -251,94 +252,105 @@ st.markdown('''
 licenseUsed = repositoryDataFrame['License'].value_counts()[:10]
 st.bar_chart(licenseUsed)
 
-# # Repositories with the Highest Star Counts
-# starCount = repositoryDataFrame.sort_values(by='Star Count', ascending=False)[:10]
-# st.subheader('Repositories with Highest Star Counts')
-# st.markdown('''
-#     - :violet[**Web Development Dominance:**] Both :orange["Bootstrap"] and :orange["React"] are prominent web
-#     development tools, with "Bootstrap" being a popular frontend framework and "React" being a widely-used JavaScript
-#     library. Their high star counts suggest their significant impact and adoption in the web development community.
-#     - :violet[**API Resources:**] The :orange["public-apis"] repository, which likely provides a collection of free APIs
-#     for development and testing, is also popular, indicating a demand for such resources.
-#     - :violet[**System Design:**] :orange["system-design-primer"] is a repository that likely provides insights into
-#     system design, and its high star count suggests that system design is a topic of interest for many developers.
-# ''')
-# st.bar_chart(starCount, x="Name", y="Star Count", color="#f67410")
-#
-# # Repositories with the Highest Fork Count
-# forkCount = repositoryDataFrame.sort_values(by='Fork Count', ascending=False)[:10]
-# st.subheader('Repositories with Highest Fork Count')
-# st.markdown('''
-#     - :violet[**Diverse Interests:**]  The presence of repositories like :orange["ProgrammingAssignment"] and
-#     :orange["SpoonKnife"] indicates diverse interests and activities on GitHub. While "ProgrammingAssignment" might be
-#     related to academic or learning challenges, "SpoonKnife" could be a tool or utility popular among developers.
-#     - :violet[**Web Development:**]  The :orange["bootstrap"] repository, associated with web development,
-#     has a substantial fork count, indicating its widespread use and contribution in web projects.
-#     - :violet[**General Purpose Programming:**] The :orange["Complete Python"] repository suggests a comprehensive
-#     guide or resource related to Python programming. Its significant fork count reflects the popularity of Python and
-#     the demand for comprehensive learning resources.
-# ''')
-# st.bar_chart(forkCount, x="Name", y="Fork Count", color="#ee003f")
+st.divider()
 
-# # Top 10 Repositories with Most Watchers
-# watchers = repositoryDataFrame.sort_values(by='Watchers', ascending=False)[:10]
-# st.subheader('Top 10 Repositories with Most Watchers')
-# st.markdown('''
-#     - :violet[**Uniform Popularity:**] Most of the repositories displayed have a fairly consistent number of watchers,
-#     ranging between 4,000 to 6,000 watchers. This suggests that these repositories are all relatively popular and
-#     actively monitored by the GitHub community.
-#     - :violet[**Learning Platforms & Challenges:**] Repositories like :orange["CodeHub"], :orange["Python-100-Days"],
-#     and :orange["freeCodeCamp"] suggest a strong interest in learning platforms or coding challenges.
-#     This indicates the continuous demand for educational content and coding challenges on GitHub.
-#     - :violet[**Machine Learning:**] The :orange["tensorflow"] repository, associated with machine learning, further
-#     emphasizes the growing interest in AI and machine learning technologies.
-# ''')
-# st.bar_chart(watchers, x="Name", y="Watchers", color="#0362ff")
-#
-# # Repositories with the Highest Pull Requests
-# pullRequests = repositoryDataFrame.sort_values(by='Pull Requests', ascending=False)[:10]
-# st.subheader('Repositories with Highest Pull Requests')
-# st.markdown('''
-#     - :violet[**Active Contribution in Homebrew:**] The repositories :orange["homebrew-cask"] and
-#     :orange["homebrew-core"] have high pull request counts, suggesting that the Homebrew package manager for macOS is
-#     actively contributed to and maintained by the community. This reflects its widespread use and significance in the
-#     macOS developer community.
-#     - :violet[**Political Data Collection:**] :orange["everypolitician-data"] seems to be a repository related to data
-#     collection on politicians. Its high pull request count suggests active data updates and contributions, possibly
-#     indicating a community-driven effort to maintain political data.
-# ''')
-# st.bar_chart(pullRequests, x="Name", y="Pull Requests", color="#5e16f0")
+st.markdown('''
+    Note: There are 6 additional graphs with their analyis. However, the streamlit server could not handle the page load
+    and hence the same have been commented in the code. The screenshots of all the graphs including the additional 6 
+    graphs are present in this GoogleDrive folder with view permissions.
+    
+    Drive link: https://drive.google.com/drive/folders/1DS7bnk_lEX8DAj58KSWyc7Vk44FZBdpY?usp=sharing
+    GitHub: https://github.com/snigi-gupta/BeaconTechnicalPMInternshipChallenge/tree/main
+''')
+"""
+# Repositories with the Highest Star Counts
+starCount = repositoryDataFrame.sort_values(by='Star Count', ascending=False)[:10]
+st.subheader('Repositories with Highest Star Counts')
+st.markdown('''
+    - :violet[**Web Development Dominance:**] Both :orange["Bootstrap"] and :orange["React"] are prominent web
+    development tools, with "Bootstrap" being a popular frontend framework and "React" being a widely-used JavaScript
+    library. Their high star counts suggest their significant impact and adoption in the web development community.
+    - :violet[**API Resources:**] The :orange["public-apis"] repository, which likely provides a collection of free APIs
+    for development and testing, is also popular, indicating a demand for such resources.
+    - :violet[**System Design:**] :orange["system-design-primer"] is a repository that likely provides insights into
+    system design, and its high star count suggests that system design is a topic of interest for many developers.
+''')
+st.bar_chart(starCount, x="Name", y="Star Count", color="#f67410")
 
-# # Repositories with the Highest Commit Counts
-# commitCount = repositoryDataFrame.sort_values(by='Commit Count', ascending=False)[:10]
-# st.subheader('Repositories with Highest Commit Counts')
-# st.markdown('''
-#     - :violet[**Linux Dominance:**] The repositories :orange["kernel"], :orange["linux-next"], :orange["linux-mksw"],
-#     and :orange["mpc-linux-next"] have high commit counts, suggesting that the Linux operating system sees extensive
-#     development and contributions. The presence of multiple Linux-related repositories underscores the active and
-#     open-source nature of Linux development.
-#     - :violet[**Commit Management:**] The repository :orange["Committed"] has a significant commit count.
-#     It might be related to commit management, version control, or developer tools given its name and high commit count.
-#     - :violet[**Consistent Activity:**] Most of the repositories displayed have commit counts ranging between 1,000,000
-#     to 3,000,000, indicating consistent and active development or contributions to these repositories.
-# ''')
-# st.bar_chart(commitCount, x="Name", y="Commit Count", color="#f67410")
+# Repositories with the Highest Fork Count
+forkCount = repositoryDataFrame.sort_values(by='Fork Count', ascending=False)[:10]
+st.subheader('Repositories with Highest Fork Count')
+st.markdown('''
+    - :violet[**Diverse Interests:**]  The presence of repositories like :orange["ProgrammingAssignment"] and
+    :orange["SpoonKnife"] indicates diverse interests and activities on GitHub. While "ProgrammingAssignment" might be
+    related to academic or learning challenges, "SpoonKnife" could be a tool or utility popular among developers.
+    - :violet[**Web Development:**]  The :orange["bootstrap"] repository, associated with web development,
+    has a substantial fork count, indicating its widespread use and contribution in web projects.
+    - :violet[**General Purpose Programming:**] The :orange["Complete Python"] repository suggests a comprehensive
+    guide or resource related to Python programming. Its significant fork count reflects the popularity of Python and
+    the demand for comprehensive learning resources.
+''')
+st.bar_chart(forkCount, x="Name", y="Fork Count", color="#ee003f")
 
-# # Repositories with the Highest Issue Counts
-# issueCount = githubDataFrame.sort_values(by='Issue Count', ascending=False)[:10]
-# st.subheader('Repositories with Highest Issue Counts')
-# st.markdown('''
-#     - :violet[**Aleth's Prominence:**] The orange["aleth"] repository has the highest issue count, considerably
-#     surpassing the other repositories. This suggests that "aleth", a C++ Ethereum client, is a complex project that
-#     might have many reported issues, feature requests, and discussions.
-#     - :violet[**Local Development and Testing:**] orange["localstack"], which provides a local AWS cloud stack for
-#     testing, has a considerable issue count, indicating its widespread use and the challenges or enhancements requested
-#     by users.
-#     - :violet[**Consistency:**] Most repositories, except for orange["aleth"], have issue counts ranging from 100
-#     to 300, indicating that they have a relatively similar level of activity and engagement.
-# ''')
-# st.bar_chart(issueCount, x="Repository Name", y="Issue Count", color="#ee003f")
+# Top 10 Repositories with Most Watchers
+watchers = repositoryDataFrame.sort_values(by='Watchers', ascending=False)[:10]
+st.subheader('Top 10 Repositories with Most Watchers')
+st.markdown('''
+    - :violet[**Uniform Popularity:**] Most of the repositories displayed have a fairly consistent number of watchers,
+    ranging between 4,000 to 6,000 watchers. This suggests that these repositories are all relatively popular and
+    actively monitored by the GitHub community.
+    - :violet[**Learning Platforms & Challenges:**] Repositories like :orange["CodeHub"], :orange["Python-100-Days"],
+    and :orange["freeCodeCamp"] suggest a strong interest in learning platforms or coding challenges.
+    This indicates the continuous demand for educational content and coding challenges on GitHub.
+    - :violet[**Machine Learning:**] The :orange["tensorflow"] repository, associated with machine learning, further
+    emphasizes the growing interest in AI and machine learning technologies.
+''')
+st.bar_chart(watchers, x="Name", y="Watchers", color="#0362ff")
 
+# Repositories with the Highest Pull Requests
+pullRequests = repositoryDataFrame.sort_values(by='Pull Requests', ascending=False)[:10]
+st.subheader('Repositories with Highest Pull Requests')
+st.markdown('''
+    - :violet[**Active Contribution in Homebrew:**] The repositories :orange["homebrew-cask"] and
+    :orange["homebrew-core"] have high pull request counts, suggesting that the Homebrew package manager for macOS is
+    actively contributed to and maintained by the community. This reflects its widespread use and significance in the
+    macOS developer community.
+    - :violet[**Political Data Collection:**] :orange["everypolitician-data"] seems to be a repository related to data
+    collection on politicians. Its high pull request count suggests active data updates and contributions, possibly
+    indicating a community-driven effort to maintain political data.
+''')
+st.bar_chart(pullRequests, x="Name", y="Pull Requests", color="#5e16f0")
+
+# Repositories with the Highest Commit Counts
+commitCount = repositoryDataFrame.sort_values(by='Commit Count', ascending=False)[:10]
+st.subheader('Repositories with Highest Commit Counts')
+st.markdown('''
+    - :violet[**Linux Dominance:**] The repositories :orange["kernel"], :orange["linux-next"], :orange["linux-mksw"],
+    and :orange["mpc-linux-next"] have high commit counts, suggesting that the Linux operating system sees extensive
+    development and contributions. The presence of multiple Linux-related repositories underscores the active and
+    open-source nature of Linux development.
+    - :violet[**Commit Management:**] The repository :orange["Committed"] has a significant commit count.
+    It might be related to commit management, version control, or developer tools given its name and high commit count.
+    - :violet[**Consistent Activity:**] Most of the repositories displayed have commit counts ranging between 1,000,000
+    to 3,000,000, indicating consistent and active development or contributions to these repositories.
+''')
+st.bar_chart(commitCount, x="Name", y="Commit Count", color="#f67410")
+
+# Repositories with the Highest Issue Counts
+issueCount = githubDataFrame.sort_values(by='Issue Count', ascending=False)[:10]
+st.subheader('Repositories with Highest Issue Counts')
+st.markdown('''
+    - :violet[**Aleth's Prominence:**] The orange["aleth"] repository has the highest issue count, considerably
+    surpassing the other repositories. This suggests that "aleth", a C++ Ethereum client, is a complex project that
+    might have many reported issues, feature requests, and discussions.
+    - :violet[**Local Development and Testing:**] orange["localstack"], which provides a local AWS cloud stack for
+    testing, has a considerable issue count, indicating its widespread use and the challenges or enhancements requested
+    by users.
+    - :violet[**Consistency:**] Most repositories, except for orange["aleth"], have issue counts ranging from 100
+    to 300, indicating that they have a relatively similar level of activity and engagement.
+''')
+st.bar_chart(issueCount, x="Repository Name", y="Issue Count", color="#ee003f")
+"""
 st.divider()
 st.markdown('''
     Thank you for the opportunity to work on this fun problem statement!

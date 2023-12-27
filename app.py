@@ -23,7 +23,7 @@ st.markdown('''
     columns in the table. The table includes columns such as primary language used in the repository, fork count, open 
     pull requests, issue count, contributors etc.
 ''')
-st.write("Shape: ", githubDataFrame.shape)
+st.write("Rows x Columns:: ", githubDataFrame.shape)
 st.dataframe(githubDataFrame)
 
 # Repository Dataset
@@ -33,7 +33,7 @@ st.markdown('''
     Along with certain columns present in the GitHub Dataset, the Repository Dataset also includes columns such as 
     licenses used, commit count, repository creation date etc." 
 ''')
-st.write("Shape: ", repositoryDataFrame.shape)
+st.write("Rows x Columns:: ", repositoryDataFrame.shape)
 st.dataframe(repositoryDataFrame[:25])
 st.caption(':green[For visualization purposes, the above table is displaying only first 25 rows.]')
 st.divider()
@@ -108,13 +108,13 @@ for index in range(len(repositoryDataFrameOldColumns)):
         columns={repositoryDataFrameOldColumns[index]: repositoryDataFrameNewColumns[index]}
     )
 st.subheader('Both Datasets after data cleaning and preparation look like this:')
-st.dataframe(githubDataFrame)
-st.write("Shape: ", githubDataFrame.shape)
 st.caption(':green[GitHub Dataset]')
+st.write("Rows x Columns: ", githubDataFrame.shape)
+st.dataframe(githubDataFrame)
 st.text('\n')
-st.dataframe(repositoryDataFrame[:25])
-st.write("Shape: ", repositoryDataFrame.shape)
 st.caption(':green[Repository Dataset]')
+st.write("Rows x Columns: ", repositoryDataFrame.shape)
+st.dataframe(repositoryDataFrame[:25])
 st.divider()
 
 
@@ -124,9 +124,9 @@ st.markdown('''
     Now, extracting and interpreting meaningful insights from data using various analytical techniques:
 ''')
 
-# Top 5 Repositories with most contributions
+# Top 10 Repositories with most contributions
 contributions = githubDataFrame.sort_values(by='Contributors', ascending=False)[:10]
-st.subheader('Top 10 Repositories with most contributions')
+st.subheader('Top 10 Repositories with Most Contributions')
 st.markdown('''
     - :violet[**Most Popular Repository:**] The repository with the highest number of contributors is :orange["LinkFree"] with 658 
     contributors.
@@ -160,6 +160,8 @@ st.markdown('''
     - :violet[**Decline of Traditional Languages:**] Languages like :orange[C], :orange[C++], and :orange[Java] show a 
     decline in recent years, suggesting a shift in the programming landscape. While they remain fundamental, newer 
     languages and technologies might be overshadowing them.
+    - :violet[**Decline of PHP:**] :orange[PHP] once a dominant language for server-side web development, has seen a 
+    decline post 2015, possibly due to the emergence of other backend technologies and frameworks.
     - :violet[**Ambiguity with "No language specified”:**] The line representing "No language specified" suggests that 
     a significant number of repositories did not specify a language, especially around 2018-2020. 
     This could be due to various reasons such as documentation repositories, or repositories with non-code assets.
@@ -167,30 +169,31 @@ st.markdown('''
 ''')
 st.line_chart(lineChartDataFrame, x="Year")
 st.markdown('''
-    The above graph has been contructed to show interesting insights of programming language usages over the years. For 
-    the data to be constructed, the :blue["Created At] column in :blue["Repository Data"] has been split and the 
+    The above graph has been constructed to show interesting insights of programming language usages over the years. For 
+    the data to be constructed, the :blue["Created At] column in :blue["Repository Dataset"] has been split and the 
     creation :blue["Year"] of each repository is extracted. The rows are grouped by [Year, Primary Language] and sorted 
     based on [Year, Star Count].
 ''')
-st.caption(':green[Here is the data for deeper visualization:]') ##
+st.caption(':green[Here is the data for deeper visualization:]')
 st.dataframe(lineChartDataFrame)
 
 # Stars VS Forks Count
 fig, ax = plt.subplots()
 st.subheader('Stars VS Forks Count')
 st.markdown('''
-    Q: What its the difference between Starring a repository VS Forking a repository?
-    Ans: :orange["Starring"] a repository is a way of bookmarking it for future reference, while :orange["Forking"] a 
-    repository creates a copy that one can modify and contribute to.
+    :pink[**Ques:**] What its the difference between Starring a repository VS Forking a repository?
+    
+    :pink[**Ans:**] :orange["Starring"] a repository is a way of bookmarking it for future reference, while 
+    :orange["Forking"] a repository creates a copy that one can modify and contribute to.
 ''')
 st.markdown('''
-    - :violet[**High Concentration:**] There's a high concentration of repositories with a lower number of stars (0-200) and 
-    forks (0-200). This suggests that many repositories receive a moderate amount of attention and engagement.
+    - :violet[**High Concentration:**] There's a high concentration of repositories with a lower number of stars (0-200) 
+    and forks (0-200). This suggests that many repositories receive a moderate amount of attention and engagement.
     - :violet[**Sparse Ist Quadrant (Upper Right):**] There are very few repositories with a high number of stars (>700) 
     and forks (>600), indicating that only a select few repositories achieve such high popularity.
-    - :violet[**Few High-Star, Low-Fork Repos:**] Some repositories have a high number of stars but relatively fewer 
+    - :violet[**High-Star, Low-Fork Repos:**] Some repositories have a high number of stars but relatively fewer 
     forks (Stars: 995, Forks: 0). This suggests that there are repositories where users prefer to 'bookmark' the 
-    repository but do not intent to make a copy and modify it.
+    repository but do not intend to make a copy and modify it.
     - :violet[**General Trend:**] In general, as the number of stars increases, the number of forks also tends to 
     increase, but not linearly. There's a broader spread in fork counts as star counts increase, indicating popular
     repositories have less modifications and thus lesser forking.
@@ -214,40 +217,159 @@ st.markdown('''
     - :violet[**Data Science & Machine Learning:**] The presence of :orange["Python"] and :orange["Jupyter Notebook"] in
     the top languages highlights the growth and popularity of data science and machine learning projects on GitHub.
 ''')
-st.caption(':green[For this graph repositories with no language specified have not been considered]')
+st.caption(':green[For this graph repositories with no language specified have not been considered and this graph '
+           'represents repositories where there is at least 1 open issue count.]')
 st.bar_chart(languagesUsed)
 
-st.markdown('The below graph is a broader representation of repositories across GitHub. When it comes to repositories '
-            'without open issue requests, :orange["JavaScript"] and :orange["Python"] are equally popular languages '
-            'for most repositories.')
-st.bar_chart(repositoryDataFrame["Primary Language"].value_counts()[:10], color="#FFC300")
+st.markdown('''
+    The below graph is a broader representation of repositories across GitHub. Looking at all the repositories in the 
+    :orange["Repository Dataset"] here are some key observations:
+''')
+st.markdown('''
+    - :violet[**Top Contenders:**] :orange["JavaScript"] and :orange["Python"] repositories have the highest star counts
+    , approaching 450,000 stars. This suggests that there are many repositories where :orange["Python/JavaScript"] 
+    are the primary language with 0 open issue counts.
+    - :violet[**Lower Popularity:**] Languages such as :orange["C"], :orange["C#"], :orange["C++"], :orange["Go"], and 
+    :orange["Typescript"] are the primary language for <150,000 repositories.
+    - :violet[**Web Development Recognition:**] :orange["JavaScript"], :orange["HTML"], and :orange["PHP"] highlight the 
+    importance and recognition of web development repositories on GitHub.
+    - :violet[**Emerging Languages:**] The presence of :orange["Go"] and :orange["Typescript"] in the list indicates the 
+    rising popularity and adoption of these newer languages in the developer community.
+''')
+languagesUsed = repositoryDataFrame.loc[repositoryDataFrame['Primary Language'] != 'No language specified']
+languagesUsed = languagesUsed["Primary Language"].value_counts()[:10]
+st.bar_chart(languagesUsed, color="#FFC300")
 
 githubDataFrame = githubDataFrame.loc[githubDataFrame.Language != 'No language specified']
 repositoryDataFrame = repositoryDataFrame.loc[repositoryDataFrame['Primary Language'] != 'No language specified']
 
-# Languages with the Highest Star Count Repositories
-st.subheader('Languages with the Highest Star Count Repositories')
-sortedByStartCount = repositoryDataFrame.sort_values(by='Star Count', ascending=False)
-languagesUsed = sortedByStartCount['Primary Language'].value_counts()[:10]
+# Top 10 popular Licenses used in GitHub Repositories
+st.subheader('Top 10 popular Licenses used in GitHub Repositories ')
 st.markdown('''
-    - :violet[**Top Contenders:**] :orange["JavaScript"] and :orange["Python"] repositories have the highest star counts, approaching 
-    450,000 stars. This suggests that they are among the most popular languages for the well-acknowledged repositories 
-    on GitHub.
+    - :violet[**Most Popular License:**] It clear from the data that :orange["MIT License"] is the most popular license 
+    used in GitHub repositories with >73,000 usage, followed by :orange["Apache License 2.0"].
+''')
+licenseUsed = repositoryDataFrame['License'].value_counts()[:10]
+st.bar_chart(licenseUsed)
+
+# Repositories with the Highest Star Counts
+starCount = repositoryDataFrame.sort_values(by='Star Count', ascending=False)[:10]
+st.subheader('Repositories with Highest Star Counts')
+st.markdown('''
+    - :violet[**Web Development Dominance:**] Both :orange["Bootstrap"] and :orange["React"] are prominent web 
+    development tools, with "Bootstrap" being a popular frontend framework and "React" being a widely-used JavaScript 
+    library. Their high star counts suggest their significant impact and adoption in the web development community.
+    - :violet[**API Resources:**] The :orange["public-apis"] repository, which likely provides a collection of free APIs 
+    for development and testing, is also popular, indicating a demand for such resources.
+    - :violet[**System Design:**] :orange["system-design-primer"] is a repository that likely provides insights into 
+    system design, and its high star count suggests that system design is a topic of interest for many developers.
+''')
+st.bar_chart(starCount, x="Name", y="Star Count", color="#f67410")
+
+# Repositories with the Highest Fork Count
+forkCount = repositoryDataFrame.sort_values(by='Fork Count', ascending=False)[:10]
+st.subheader('Repositories with Highest Fork Count')
+st.markdown('''
+    - :violet[**Diverse Interests:**]  The presence of repositories like :orange["ProgrammingAssignment"] and 
+    :orange["SpoonKnife"] indicates diverse interests and activities on GitHub. While "ProgrammingAssignment" might be 
+    related to academic or learning challenges, "SpoonKnife" could be a tool or utility popular among developers.
+    - :violet[**Web Development:**]  The :orange["bootstrap"] repository, associated with web development, 
+    has a substantial fork count, indicating its widespread use and contribution in web projects.
+    - :violet[**General Purpose Programming:**] The :orange["Complete Python"] repository suggests a comprehensive 
+    guide or resource related to Python programming. Its significant fork count reflects the popularity of Python and 
+    the demand for comprehensive learning resources.
+''')
+st.bar_chart(forkCount, x="Name", y="Fork Count", color="#ee003f")
+
+# Top 10 Repositories with Most Watchers
+watchers = repositoryDataFrame.sort_values(by='Watchers', ascending=False)[:10]
+st.subheader('Top 10 Repositories with Most Watchers')
+st.markdown('''
+    - :violet[**Uniform Popularity:**] Most of the repositories displayed have a fairly consistent number of watchers, 
+    ranging between 4,000 to 6,000 watchers. This suggests that these repositories are all relatively popular and 
+    actively monitored by the GitHub community.
+    - :violet[**Learning Platforms & Challenges:**] Repositories like :orange["CodeHub"], :orange["Python-100-Days"], 
+    and :orange["freeCodeCamp"] suggest a strong interest in learning platforms or coding challenges. 
+    This indicates the continuous demand for educational content and coding challenges on GitHub.
+    - :violet[**Machine Learning:**] The :orange["tensorflow"] repository, associated with machine learning, further 
+    emphasizes the growing interest in AI and machine learning technologies.
+''')
+st.bar_chart(watchers, x="Name", y="Watchers", color="#0362ff")
+
+# Repositories with the Highest Pull Requests
+pullRequests = repositoryDataFrame.sort_values(by='Pull Requests', ascending=False)[:10]
+st.subheader('Repositories with Highest Pull Requests')
+st.markdown('''
+    - :violet[**Active Contribution in Homebrew:**] The repositories :orange["homebrew-cask"] and 
+    :orange["homebrew-core"] have high pull request counts, suggesting that the Homebrew package manager for macOS is 
+    actively contributed to and maintained by the community. This reflects its widespread use and significance in the 
+    macOS developer community.
+    - :violet[**Political Data Collection:**] :orange["everypolitician-data"] seems to be a repository related to data 
+    collection on politicians. Its high pull request count suggests active data updates and contributions, possibly 
+    indicating a community-driven effort to maintain political data.
+''')
+st.bar_chart(pullRequests, x="Name", y="Pull Requests", color="#5e16f0")
+
+# Repositories with the Highest Commit Counts
+commitCount = repositoryDataFrame.sort_values(by='Commit Count', ascending=False)[:10]
+st.subheader('Repositories with Highest Commit Counts')
+st.markdown('''
+    - :violet[**Linux Dominance:**] The repositories :orange["kernel"], :orange["linux-next"], :orange["linux-mksw"], 
+    and :orange["mpc-linux-next"] have high commit counts, suggesting that the Linux operating system sees extensive 
+    development and contributions. The presence of multiple Linux-related repositories underscores the active and 
+    open-source nature of Linux development.
+    - :violet[**Commit Management:**] The repository :orange["Committed"] has a significant commit count. 
+    It might be related to commit management, version control, or developer tools given its name and high commit count.
+    - :violet[**Consistent Activity:**] Most of the repositories displayed have commit counts ranging between 1,000,000 
+    to 3,000,000, indicating consistent and active development or contributions to these repositories.
+''')
+st.bar_chart(commitCount, x="Name", y="Commit Count", color="#f67410")
+
+# Repositories with the Highest Issue Counts
+issueCount = githubDataFrame.sort_values(by='Issue Count', ascending=False)[:10]
+st.subheader('Repositories with Highest Issue Counts')
+st.markdown('''
+    - :violet[**Aleth's Prominence:**] The orange["aleth"] repository has the highest issue count, considerably 
+    surpassing the other repositories. This suggests that "aleth", a C++ Ethereum client, is a complex project that 
+    might have many reported issues, feature requests, and discussions.
+    - :violet[**Local Development and Testing:**] orange["localstack"], which provides a local AWS cloud stack for 
+    testing, has a considerable issue count, indicating its widespread use and the challenges or enhancements requested 
+    by users.
+    - :violet[**Consistency:**] Most repositories, except for orange["aleth"], have issue counts ranging from 100 
+    to 300, indicating that they have a relatively similar level of activity and engagement.
+''')
+st.bar_chart(issueCount, x="Repository Name", y="Issue Count", color="#ee003f")
+
+# Highest Star Count Repositories based on Language used
+st.subheader('Highest Star Count Repositories based on Language used')
+sortedByStarCount = repositoryDataFrame.sort_values(by='Star Count', ascending=False)
+languagesUsed = sortedByStarCount[['Primary Language', 'Star Count']][:10]
+st.markdown('''
+    - :violet[**Top Contenders:**] :orange["JavaScript"] and :orange["Python"] repositories have the highest star counts
+    , approaching 450,000 stars. This suggests that they are among the most popular languages for the well-acknowledged 
+    repositories on GitHub.
     - :violet[**Lower Popularity:**] Languages such as :orange["C"], :orange["C#"], :orange["C++"], :orange["Go"], and 
     :orange["Typescript"] have star counts below 150,000. While these repositories are still popular given their 
     inclusion in the top 10, they have relatively fewer stars compared to the leading languages.
     - :violet[**Web Development Recognition:**] The high star counts for :orange["JavaScript"], :orange["HTML"], and 
     :orange["PHP"] highlight the importance and recognition of web development repositories on GitHub.
-    - :violet[**Emerging Languages:**] The presence of :orange["Go"] and :orange["Typescript"] in the list indicates the rising 
-    popularity and adoption of these newer languages in the developer community.
+    - :violet[**Emerging Languages:**] The presence of :orange["Go"] and :orange["Typescript"] in the list indicates the 
+    rising popularity and adoption of these newer languages in the developer community.
 ''')
-st.bar_chart(languagesUsed, color="#C70039")
+st.line_chart(languagesUsed, x='Star Count', y='Primary Language')
+
+# # Repositories with the Highest Commit Requests
+# st.subheader('Top 10 Repositories with the Highest Commits ')
+# sortedByCommitCount = repositoryDataFrame.sort_values(by='Commit Count', ascending=False)
+# st.write(sortedByCommitCount[:10])
+# # st.bar_chart(sortedByCommitCount, x="Name", y="Commit Count")
 
 # Languages with the Highest Fork Count Repositories
 st.subheader('Languages with the Highest Fork Count Repositories')
 sortedByForkCount = repositoryDataFrame.sort_values(by='Fork Count', ascending=False)
 st.write(sortedByForkCount[:20])
 languagesUsed = sortedByForkCount['Primary Language'].value_counts()[:10]
+st.write(languagesUsed)
 st.bar_chart(languagesUsed)
 
 # Repositories with the Highest Issue Counts
@@ -262,18 +384,18 @@ languagesUsed = repositoryDataFrame.sort_values(by='Pull Requests', ascending=Fa
 languagesUsed = languagesUsed['Primary Language'].value_counts()[:10]
 st.bar_chart(languagesUsed)
 
-# Repositories with the Highest Commit Requests
-st.subheader('Repositories with the Highest Commits ')
-languagesUsed = repositoryDataFrame.sort_values(by='Pull Requests', ascending=False)
-languagesUsed = languagesUsed['Primary Language'].value_counts()[:10]
-st.bar_chart(languagesUsed)
-
 # Forck, Issues, Commit, pull, watchers, license(top licesne, license vs valueCount)
 
 
-
-
-
-# created, extrcat year, y axis group by count of primary language,
-
-# Remove non for lang col in 2nd table , stars vs forks data set usage
+st.divider()
+st.markdown('''
+    Thank you for the opportunity to work on this fun problem statement!
+    
+    Built by Snigdha Gupta
+    
+    Carnegie Mellon University, Tepper School of Business
+    
+    https://www.linkedin.com/in/snigi/
+    
+    snigdhag@tepper.cmu.edu
+''')
